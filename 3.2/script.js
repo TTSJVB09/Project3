@@ -3,7 +3,7 @@ let xPos = 0;
 gsap
 .timeline()
 .set(".ring", { rotationY: 180, cursor: "grab" }) //set initial rotationY so the parallax jump happens off screen
-.set(".img32", {
+.set(".img", {
     // apply transform rotations to each image
     rotateY: (i) => i * -36,
     transformOrigin: "50% 50% 500px",
@@ -13,7 +13,7 @@ gsap
 .add(() => {
     fetchDogImages(); // Call the function to fetch dog images
 }, "-=0.5")
-.from(".img32", {
+.from(".img", {
     duration: 1.5,
     y: 200,
     opacity: 0,
@@ -21,15 +21,15 @@ gsap
     ease: "expo",
 })
 .add(() => {
-    $(".img32").on("mouseenter", (e) => {
+    $(".img").on("mouseenter", (e) => {
     let current = e.currentTarget;
-    gsap.to(".img32", {
+    gsap.to(".img", {
         opacity: (i, t) => (t == current ? 1 : 0.5),
         ease: "power3",
     });
     });
-    $(".img32").on("mouseleave", (e) => {
-    gsap.to(".img32", { opacity: 1, ease: "power2.inOut" });
+    $(".img").on("mouseleave", (e) => {
+    gsap.to(".img", { opacity: 1, ease: "power2.inOut" });
     });
 }, "-=0.5");
 
@@ -49,7 +49,7 @@ if (e.touches) e.clientX = e.touches[0].clientX;
 gsap.to(".ring", {
     rotationY: "-=" + ((Math.round(e.clientX) - xPos) % 360),
     onUpdate: () => {
-    gsap.set(".img32", { backgroundPosition: (i) => getBgPos(i) });
+    gsap.set(".img", { backgroundPosition: (i) => getBgPos(i) });
     },
 });
 
@@ -89,10 +89,8 @@ fetch("https://dog.ceo/api/breeds/image/random/10")
 }
 
 function updateDogImages(dogImages) {
-// Update your DOM with the dog images
-// Assuming you have three images in the dogImages array
 if (dogImages) {
-    $(".img32").each((i, el) => {
+    $(".img").each((i, el) => {
     $(el).css({
         "background-image": `url(${dogImages[i]})`,
         "background-position": getBgPos(i),
